@@ -13,6 +13,7 @@ grids = [
     0, 1, 0, 1, 1, 1, 1, 0,
     0, 0, 0, 0, 0, 0, 0, 0
 ]
+obstacleBlock = []
 
 def gridLayout(x, y, val):
     path.up()
@@ -29,6 +30,7 @@ def gridLayout(x, y, val):
     path.end_fill()
 
 def index():
+    global obstacleBlock;
     for index in range(len(grids)):
         grid = grids[index]
         x = (index % 8) * 20 - 200
@@ -39,6 +41,7 @@ def index():
             path.goto(x + 10, y + 10)
             path.dot(3, 'white')
         else:
+            obstacleBlock.append({'x':x+10, 'y':y+10 })
             path.up()
             path.goto(x + 8, y + 3)
             path.write('#')
@@ -48,9 +51,10 @@ def index():
     update()
 
 def moveTo(x, y):
-    aim.x = x
-    aim.y = y
-    move()
+    if validBlock(pacman + vector(x,y)):
+        aim.x = x
+        aim.y = y
+        move()
 
 def move():
     clear()
@@ -59,6 +63,14 @@ def move():
     goto(pacman.x, pacman.y)
     dot(15, 'yellow')
     update()
+
+def validBlock(point):
+    global obstacleBlock
+    isObstacle = list(filter(lambda item: item['x'] == point.x and item['y'] == point.y, obstacleBlock))
+    if len(isObstacle) == 0:
+        return True
+    else:
+        return False
 
 setup(800, 420, 300, 150)
 title("Treasure Hunt - Evermos!")
