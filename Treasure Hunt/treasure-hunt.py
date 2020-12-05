@@ -64,10 +64,12 @@ def index():
     update()
 
 def moveTo(x, y):
-    if validBlock(pacman + vector(x,y)):
-        aim.x = x
-        aim.y = y
-        move()
+    global isTreasureFound
+    if isTreasureFound == False:
+        if validBlock(pacman + vector(x,y)):
+            aim.x = x
+            aim.y = y
+            move()
 
 def move():
     clear()
