@@ -97,15 +97,23 @@ def treasureHunt(x, y):
     if (myLocation != treasureLocation):
         distance = sqrt((x-x1)*(x-x1)+(y-y1)*(y-y1))
         stepAmount += 1
-        print("Step "+str(stepAmount)+". The distance you are from the treasure is: "+str(round(distance,2)))
+        writer.up()
+        writer.setposition(50, 190-(stepAmount*15))
+        message = "Step "+str(stepAmount)+". The distance you are from the treasure is: "+str(round(distance,2))
+        writer.write(message)
     else:
         isTreasureFound = True
-        print("Finish. It only took you "+str(stepAmount)+" steps!")
+        writer.up()
+        writer.setposition(50, 190-(stepAmount*15)-15)
+        message = "Finish. It only took you "+str(stepAmount)+" steps!";
+        writer.write(message)
 
 setup(800, 420, 300, 150)
 title("Treasure Hunt - Evermos!")
 tracer(False)
-print('Start')
+writer.up()
+writer.setposition(50, 190)
+writer.write('Start')
 
 listen()
 onkey(lambda: moveTo(20,0), 'Right')
