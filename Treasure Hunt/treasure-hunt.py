@@ -1,6 +1,7 @@
 from turtle import *
 from base import vector
 import random
+from math import sqrt
 
 path = Turtle(visible = False)
 writer = Turtle(visible = False)
@@ -16,6 +17,9 @@ grids = [
 ]
 obstacleBlock = []
 treasureLocate = []
+stepAmount = 0
+distance = 0
+isTreasureFound = False
 
 def gridLayout(x, y, val):
     path.up()
@@ -72,6 +76,7 @@ def move():
     goto(pacman.x, pacman.y)
     dot(15, 'yellow')
     update()
+    treasureHunt(pacman.x, pacman.y)
 
 def validBlock(point):
     global obstacleBlock
@@ -81,9 +86,24 @@ def validBlock(point):
     else:
         return False
 
+def treasureHunt(x, y):
+    global treasureLocate, stepAmount, distance, isTreasureFound;
+    myLocation = (x, y)
+    x1 = treasureLocate['x']
+    y1 = treasureLocate['y']
+    treasureLocation = (x1, y1)
+    if (myLocation != treasureLocation):
+        distance = sqrt((x-x1)*(x-x1)+(y-y1)*(y-y1))
+        stepAmount += 1
+        print("Step "+str(stepAmount)+". The distance you are from the treasure is: "+str(round(distance,2)))
+    else:
+        isTreasureFound = True
+        print("Finish. It only took you "+str(stepAmount)+" steps!")
+
 setup(800, 420, 300, 150)
 title("Treasure Hunt - Evermos!")
 tracer(False)
+print('Start')
 
 listen()
 onkey(lambda: moveTo(20,0), 'Right')
