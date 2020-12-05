@@ -47,8 +47,28 @@ def index():
     dot(15, 'yellow')
     update()
 
+def moveTo(x, y):
+    aim.x = x
+    aim.y = y
+    move()
+
+def move():
+    clear()
+    pacman.move(aim)
+    up()
+    goto(pacman.x, pacman.y)
+    dot(15, 'yellow')
+    update()
+
 setup(800, 420, 300, 150)
 title("Treasure Hunt - Evermos!")
 tracer(False)
+
+listen()
+onkey(lambda: moveTo(20,0), 'Right')
+onkey(lambda: moveTo(-20,0), 'Left')
+onkey(lambda: moveTo(0,20), 'Up')
+onkey(lambda: moveTo(0,-20), 'Down')
+
 index()
 done()
