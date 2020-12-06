@@ -16,8 +16,8 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        $models = Player::all();
-        return response([ 'models' => PlayerResource::collection($models), 'message' => 'Retrieved successfully'], 200);
+        $players = Player::with('containers')->get();
+        return response([ 'data' => PlayerResource::collection($players), 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
@@ -35,38 +35,38 @@ class PlayerController extends Controller
         if ($validator->fails()) {
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
-        $models = Player::create($data);
-        return response(['models' => new PlayerResource($models), 'message' => 'Created successfully'], 201);
+        $players = Player::create($data);
+        return response(['data' => new PlayerResource($players), 'message' => 'Created successfully'], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Player  $player
+     * @param  \App\players\Player  $player
      * @return \Illuminate\Http\Response
      */
     public function show(Player $player)
     {
-        return response(['models' => new PlayerResource($player), 'message' => 'Retrieved successfully'], 200);
+        return response(['data' => new PlayerResource($player), 'message' => 'Retrieved successfully'], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Player  $player
+     * @param  \App\players\Player  $player
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Player $player)
     {
         $player->update($request->all());
-        return response(['models' => new PlayerResource($player), 'message' => 'Update successfully'], 200);
+        return response(['data' => new PlayerResource($player), 'message' => 'Update successfully'], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Player  $player
+     * @param  \App\players\Player  $player
      * @return \Illuminate\Http\Response
      */
     public function destroy(Player $player)

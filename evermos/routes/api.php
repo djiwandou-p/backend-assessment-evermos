@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PlayerController;
+use App\Http\Controllers\ContainerController;
 
 
 /*
@@ -16,11 +16,29 @@ use App\Http\Controllers\PlayerController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::get('/', function (Request $request) {
     return "Hai";
 });
-Route::apiResource('player', PlayerController::class);
+
+
+Route::group(['prefix'=>'player'], function () {
+	Route::get('', 'App\Http\Controllers\PlayerController@index');
+	Route::post('', 'App\Http\Controllers\PlayerController@store');
+
+	Route::group(['prefix'=>'{player}'], function () {
+		Route::get('', 'App\Http\Controllers\PlayerController@show');
+		Route::put('', 'App\Http\Controllers\PlayerController@update');
+		Route::delete('', 'App\Http\Controllers\PlayerController@delete');
+		Route::group(['prefix'=>'container'], function () {
+			Route::get('', 'App\Http\Controllers\ContainerController@index');
+			Route::get('/{container}', 'App\Http\Controllers\ContainerController@show');
+			Route::post('', 'App\Http\Controllers\ContainerController@store');
+			Route::put('/{container}', 'App\Http\Controllers\ContainerController@update');
+			Route::patch('/{container}', 'App\Http\Controllers\ContainerController@updateAmmount');
+			Route::delete('/{container}', 'App\Http\Controllers\ContainerController@delete');
+		});
+	});
+});
+
+
+

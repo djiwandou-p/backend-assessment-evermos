@@ -3,9 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\ContainerResource;
 
-class PlayerResource extends JsonResource
+class ContainerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +17,9 @@ class PlayerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'container' => ContainerResource::collection($this->containers),
+            'capacity' => $this->capacity,
+            'ammount' => $this->ammount,
         ];
+        return parent::toArray($request);
     }
 }
