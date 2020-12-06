@@ -66,15 +66,15 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof ModelNotFoundException) {
             $modelName = strtolower(class_basename($exception->getModel()));
-            return (new ApiController)->sendResponse([], "Does not exist with {$modelName} and the specified identifier", 404);
+            return (new ApiController)->sendResponse([], "Data not found.", 404, false);
         }
 
         if ($exception instanceof MethodNotAllowedHttpException) {
-            return (new ApiController)->sendResponse([], 'The specified method for the request is invalid', 405);
+            return (new ApiController)->sendResponse([], 'The specified method for the request is invalid', 405, false);
         }
 
         if ($exception instanceof NotFoundHttpException) {
-            return (new ApiController)->sendResponse([], 'The specified URL cannot be found', 404);
+            return (new ApiController)->sendResponse([], 'The specified URL cannot be found', 404, false);
         }
 
         if ($exception instanceof HttpException) {
@@ -84,10 +84,8 @@ class Handler extends ExceptionHandler
         if ($exception instanceof QueryException) {
             $errorCode = $exception->errorInfo[1];
             if ($errorCode === 1451) {
-                return (new ApiController)->sendResponse([], 'Cannot remove this resource permanently. It is related with another resource', 409);
+                return (new ApiController)->sendResponse([], 'Cannot remove this resource permanently. It is related with another resource', 409, false);
             }
         }
-
-        return (new ApiController)->sendResponse([], 'Unexpected Exception. Try later', 500);
     }
 }

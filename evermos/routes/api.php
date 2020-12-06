@@ -33,7 +33,7 @@ Route::group(['prefix'=>'v1'], function () {
 		Route::group(['prefix'=>'{player}'], function () {
 			Route::get('', 'App\Http\Controllers\PlayerController@show');
 			Route::put('', 'App\Http\Controllers\PlayerController@update');
-			Route::delete('', 'App\Http\Controllers\PlayerController@delete');
+			Route::delete('', 'App\Http\Controllers\PlayerController@destroy');
 			Route::patch('/play', 'App\Http\Controllers\PlayerController@play');
 			Route::get('/containers', 'App\Http\Controllers\ContainerController@index');
 			Route::group(['prefix'=>'container'], function () {
@@ -41,7 +41,7 @@ Route::group(['prefix'=>'v1'], function () {
 				Route::post('', 'App\Http\Controllers\ContainerController@store');
 				Route::put('/{container}', 'App\Http\Controllers\ContainerController@update');
 				Route::patch('/{container}', 'App\Http\Controllers\ContainerController@updateAmmount');
-				Route::delete('/{container}', 'App\Http\Controllers\ContainerController@delete');
+				Route::delete('/{container}', 'App\Http\Controllers\ContainerController@destroy');
 			});
 		});
 	});
