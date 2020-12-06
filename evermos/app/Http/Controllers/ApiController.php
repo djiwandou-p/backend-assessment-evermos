@@ -19,7 +19,9 @@ class ApiController extends Controller
             'message' => $message,
             'status' => $status,
         ];
-        $response['content'] = $content;
+        if($content){
+            $response['content'] = $content;
+        }
         return response()->json($response, $statusCode);
     }
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ContainerController;
+use App\Http\Controllers\ApiController;
 
 
 /*
@@ -20,6 +20,9 @@ Route::get('/', function (Request $request) {
     return "Hai";
 });
 
+Route::fallback(function(){
+    return (new ApiController)->sendResponse([], 'Page Not Found. If error persists, contact ranakrisna17031995@gmail.com', 404, false);
+});
 
 Route::group(['prefix'=>'v1'], function () {
 	Route::get('players', 'App\Http\Controllers\PlayerController@index');
