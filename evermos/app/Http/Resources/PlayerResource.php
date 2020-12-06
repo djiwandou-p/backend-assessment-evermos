@@ -18,6 +18,7 @@ class PlayerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'state' => $this->state,
             'container' => ContainerResource::collection($this->containers),
         ];
     }

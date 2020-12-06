@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Player;
+use App\Models\Container;
 use Illuminate\Http\Request;
 use App\Http\Resources\PlayerResource;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\ApiController as ApiController;
 
-class PlayerController extends Controller
+class PlayerController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +18,8 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        $players = Player::with('containers')->get();
-        return response([ 'data' => PlayerResource::collection($players), 'message' => 'Retrieved successfully'], 200);
+        $models = Player::with('containers')->get();
+        return $this->sendResponse(["total" => $models->count(), "data" => PlayerResource::collection($models)], 'OK');
     }
 
     /**
@@ -33,45 +35,75 @@ class PlayerController extends Controller
             'name' => 'required|max:191',
         ]);
         if ($validator->fails()) {
-            return response(['error' => $validator->errors(), 'Validation Error']);
+            return $this->sendResponse($validator->errors(), 'Validation Error', 400, false);
         }
-        $players = Player::create($data);
-        return response(['data' => new PlayerResource($players), 'message' => 'Created successfully'], 201);
+        $model = Player::create($data);
+        return $this->sendResponse(new PlayerResource($model), 'Created succesfully.', 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\players\Player  $player
+     * @param  \App\Models\Player  $player
      * @return \Illuminate\Http\Response
      */
     public function show(Player $player)
     {
-        return response(['data' => new PlayerResource($player), 'message' => 'Retrieved successfully'], 200);
+        return $this->sendResponse(new PlayerResource($player), 'OK');
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\players\Player  $player
+     * @param  \App\Models\Player  $player
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Player $player)
     {
         $player->update($request->all());
-        return response(['data' => new PlayerResource($player), 'message' => 'Update successfully'], 200);
+        return $this->sendResponse(new PlayerResource($player), 'Updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\players\Player  $player
+     * @param  \App\Models\Player  $player
      * @return \Illuminate\Http\Response
      */
     public function destroy(Player $player)
     {
         $player->delete();
-        return response(['message' => 'Deleted']);
+        return $this->sendResponse(new PlayerResource($player), 'Deleted successfully.', 204);
+    }
+
+    /**
+     * Update the state resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Player  $player
+     * @return \Illuminate\Http\Response
+     */
+    public function play(Request $request, Player $player)
+    {
+        $message = 'You\'re not ready to play.';
+        $statusCode = 400;
+        if($player->state == 'READY'){
+            $model = Container::where(\DB::raw('ammount'), '=', \DB::raw('capacity'))->where('player_id', $player->id)->first();
+            if(!empty($model)){
+                $player->state = 'PLAYED';
+                $player->update();
+                $statusCode = 200;
+                $message = 'You\'re played.';
+            }else{
+                $message = 'You don\'t have any container';
+            }
+        }else{
+            if($player->state == 'PLAYED'){
+                $message = 'You\'re in play.';
+                $statusCode = 200;
+            }
+        }
+        return $this->sendResponse(new PlayerResource($player), $message, $statusCode);
     }
 }

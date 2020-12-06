@@ -21,21 +21,25 @@ Route::get('/', function (Request $request) {
 });
 
 
-Route::group(['prefix'=>'player'], function () {
-	Route::get('', 'App\Http\Controllers\PlayerController@index');
-	Route::post('', 'App\Http\Controllers\PlayerController@store');
+Route::group(['prefix'=>'v1'], function () {
+	Route::get('players', 'App\Http\Controllers\PlayerController@index');
 
-	Route::group(['prefix'=>'{player}'], function () {
-		Route::get('', 'App\Http\Controllers\PlayerController@show');
-		Route::put('', 'App\Http\Controllers\PlayerController@update');
-		Route::delete('', 'App\Http\Controllers\PlayerController@delete');
-		Route::group(['prefix'=>'container'], function () {
-			Route::get('', 'App\Http\Controllers\ContainerController@index');
-			Route::get('/{container}', 'App\Http\Controllers\ContainerController@show');
-			Route::post('', 'App\Http\Controllers\ContainerController@store');
-			Route::put('/{container}', 'App\Http\Controllers\ContainerController@update');
-			Route::patch('/{container}', 'App\Http\Controllers\ContainerController@updateAmmount');
-			Route::delete('/{container}', 'App\Http\Controllers\ContainerController@delete');
+	Route::group(['prefix'=>'player'], function () {
+		Route::post('', 'App\Http\Controllers\PlayerController@store');
+
+		Route::group(['prefix'=>'{player}'], function () {
+			Route::get('', 'App\Http\Controllers\PlayerController@show');
+			Route::put('', 'App\Http\Controllers\PlayerController@update');
+			Route::delete('', 'App\Http\Controllers\PlayerController@delete');
+			Route::patch('/play', 'App\Http\Controllers\PlayerController@play');
+			Route::get('/containers', 'App\Http\Controllers\ContainerController@index');
+			Route::group(['prefix'=>'container'], function () {
+				Route::get('/{container}', 'App\Http\Controllers\ContainerController@show');
+				Route::post('', 'App\Http\Controllers\ContainerController@store');
+				Route::put('/{container}', 'App\Http\Controllers\ContainerController@update');
+				Route::patch('/{container}', 'App\Http\Controllers\ContainerController@updateAmmount');
+				Route::delete('/{container}', 'App\Http\Controllers\ContainerController@delete');
+			});
 		});
 	});
 });

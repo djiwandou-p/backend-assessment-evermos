@@ -7,8 +7,9 @@ use App\Models\Player;
 use Illuminate\Http\Request;
 use App\Http\Resources\ContainerResource;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\ApiController as ApiController;
 
-class ContainerController extends Controller
+class ContainerController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +18,8 @@ class ContainerController extends Controller
      */
     public function index(Player $player)
     {
-        $containers = Container::where('player_id', $player->id)->get();
-        return response([ 'data' => ContainerResource::collection($containers), 'message' => 'Retrieved successfully'], 200);
+        $models = Container::where('player_id', $player->id)->get();
+        return $this->sendResponse(["total" => $models->count(), "data" => ContainerResource::collection($models)], 'OK');
     }
 
     /**
@@ -32,13 +33,14 @@ class ContainerController extends Controller
         $data = $request->all();
         $validator = Validator::make($data, [
             'name' => 'required|max:191',
+            'capacity' => 'required|integer|max:20',
         ]);
         if ($validator->fails()) {
-            return response(['error' => $validator->errors(), 'Validation Error']);
+            return $this->sendResponse($validator->errors(), 'Validation Error', 400, false);
         }
         $data['player_id'] = $player->id;
-        $containers = Container::create($data);
-        return response(['data' => new ContainerResource($containers), 'message' => 'Created successfully'], 201);
+        $model = Container::create($data);
+        return $this->sendResponse(new ContainerResource($model), 'Created succesfully.', 201);
     }
 
     /**
@@ -49,7 +51,7 @@ class ContainerController extends Controller
      */
     public function show(Player $player, Container $container)
     {
-        return response(['data' => new ContainerResource($container), 'message' => 'Retrieved successfully'], 200);
+        return $this->sendResponse(new ContainerResource($container), 'OK');
     }
 
     /**
@@ -62,7 +64,7 @@ class ContainerController extends Controller
     public function update(Request $request, Player $player, Container $container)
     {
         $container->update($request->all());
-        return response(['data' => new ContainerResource($container), 'message' => 'Update successfully'], 200);
+        return $this->sendResponse(new ContainerResource($container), 'Updated successfully.');
     }
 
     /**
@@ -79,10 +81,13 @@ class ContainerController extends Controller
             'ammount' => 'required|checkCapacity:'.$container->capacity,
         ]);
         if ($validator->fails()) {
-            return response(['data' => new ContainerResource($container), 'message' => 'The Container is fully loaded with tennis balls and you\'re ready to play.'], 403);
+            $container->ammount--;
+            $player->state = "READY";
+            $player->update();
+            return $this->sendResponse(new ContainerResource($container), 'The Container is fully loaded with tennis balls and you\'re ready to play.', 403, false);
         }
         $container->update();
-        return response(['data' => new ContainerResource($container), 'message' => 'Update successfully'], 200);
+        return $this->sendResponse(new ContainerResource($container), 'OK');
     }
 
     /**
@@ -94,6 +99,6 @@ class ContainerController extends Controller
     public function destroy(Player $player, Container $container)
     {
         $container->delete();
-        return response(['message' => 'Deleted']);
+        return $this->sendResponse(new ContainerResource($container), 'Deleted successfully.', 204);
     }
 }
