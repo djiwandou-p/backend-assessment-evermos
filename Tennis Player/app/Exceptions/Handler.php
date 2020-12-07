@@ -87,5 +87,6 @@ class Handler extends ExceptionHandler
                 return (new ApiController)->sendResponse([], 'Cannot remove this resource permanently. It is related with another resource', 409, false);
             }
         }
+        return (new ApiController)->sendResponse([], 'Internal Server Error', 500, false);
     }
 }

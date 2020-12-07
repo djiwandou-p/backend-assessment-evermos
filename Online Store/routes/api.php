@@ -26,23 +26,25 @@ Route::fallback(function(){
 
 Route::group(['prefix'=>'v1'], function () {
 	Route::get('stores', 'App\Http\Controllers\StoreController@index');
-
 	Route::group(['prefix'=>'store'], function () {
 		Route::post('', 'App\Http\Controllers\StoreController@store');
-
 		Route::group(['prefix'=>'{store}'], function () {
 			Route::get('', 'App\Http\Controllers\StoreController@show');
 			Route::put('', 'App\Http\Controllers\StoreController@update');
 			Route::delete('', 'App\Http\Controllers\StoreController@destroy');
+			Route::get('/products', 'App\Http\Controllers\StoreController@showProducts');
+		});
+	});
 
-			// Route::get('/containers', 'App\Http\Controllers\ContainerController@index');
-			// Route::group(['prefix'=>'container'], function () {
-			// 	Route::get('/{container}', 'App\Http\Controllers\ContainerController@show');
-			// 	Route::post('', 'App\Http\Controllers\ContainerController@store');
-			// 	Route::put('/{container}', 'App\Http\Controllers\ContainerController@update');
-			// 	Route::patch('/{container}', 'App\Http\Controllers\ContainerController@updateAmmount');
-			// 	Route::delete('/{container}', 'App\Http\Controllers\ContainerController@destroy');
-			// });
+	Route::get('products', 'App\Http\Controllers\ProductController@index');
+	Route::group(['prefix'=>'product'], function () {
+		Route::post('', 'App\Http\Controllers\ProductController@store');
+		Route::group(['prefix'=>'{product}'], function () {
+			Route::get('', 'App\Http\Controllers\ProductController@show');
+			Route::put('', 'App\Http\Controllers\ProductController@update');
+			Route::delete('', 'App\Http\Controllers\ProductController@destroy');
+			Route::get('/flash-sale', 'App\Http\Controllers\ProductController@showFlashSale');
+			Route::post('/flash-sale', 'App\Http\Controllers\ProductController@storeFlashSale');
 		});
 	});
 });

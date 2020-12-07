@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\StoreResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ApiController as ApiController;
+use App\Http\Resources\ProductResource;
 
 class StoreController extends ApiController
 {
@@ -48,7 +49,20 @@ class StoreController extends ApiController
      */
     public function show(Store $store)
     {
+        $store->load('products');
         return $this->sendResponse(new StoreResource($store), 'OK');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Store  $store
+     * @return \Illuminate\Http\Response
+     */
+    public function showProducts(Store $store)
+    {
+        $store->load('products');
+        return $this->sendResponse(["total" => $store->products->count(), "data" => ProductResource::collection($store->products)], 'OK');
     }
 
     /**

@@ -20,8 +20,8 @@ class CreateTableProduct extends Migration
             $table->unsignedInteger('stock')->default(0);
             $table->float('price', 10, 2)->default(0);
             $table->enum('discount_type', ['PRICE', 'PERCENT'])->nullable()->default(null);
-            $table->float('discount', 10, 2)->default(0);
-            $table->float('price_after_discount', 10, 2)->default(0);
+            $table->float('discount', 10, 2)->nullable()->default(0);
+            $table->float('price_after_discount', 10, 2)->nullable()->default(0);
             $table->foreignId('store_id')->constrained('stores')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
