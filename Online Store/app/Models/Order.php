@@ -24,6 +24,11 @@ class Order extends Model
         'status' => 'string'
     ];
 
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class, 'order_id');
+    }
+
     public function getCreatedAtAttribute($value)
     {
         if (empty($value)) {

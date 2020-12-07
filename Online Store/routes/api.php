@@ -53,8 +53,6 @@ Route::group(['prefix'=>'v1'], function () {
 		Route::post('', 'App\Http\Controllers\OrderController@store');
 		Route::group(['prefix'=>'{order}'], function () {
 			Route::get('', 'App\Http\Controllers\OrderController@show');
-			Route::put('', 'App\Http\Controllers\OrderController@update');
-			Route::delete('', 'App\Http\Controllers\OrderController@destroy');
 		});
 	});
 });

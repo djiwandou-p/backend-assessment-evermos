@@ -61,6 +61,15 @@ class Product extends Model
         return $model;
     }
 
+    public static function decreaseStock($model, $value = 0)
+    {
+        $model->decrement('stock', $value);
+        if(count($model->flashSales)){
+            $model->flashSales()->decrement('stock', $value);
+        }
+        return $model;
+    }
+
     public function store()
     {
         return $this->belongsTo(Store::class, 'store_id');
@@ -69,17 +78,16 @@ class Product extends Model
     public function flashSale()
     {
         return $this->belongsTo(FlashSale::class, 'id', 'product_id')->where(function($query){
-            $query->where('start_at', '>', now());
-            $query->where('end_at', '>', now());
+            $query->where('start_at', '<=', date('Y-m-d H:i:s'));
+            $query->where('end_at', '>=', date('Y-m-d H:i:s'));
         })->orderBy('created_at')->limit(1);
     }
 
     public function flashSales()
     {
-
-        return $this->hasMany(FlashSale::class, 'product_id')->where(function($query){
-            $query->where('start_at', '>', now());
-            $query->where('end_at', '>', now());
+        return  $this->hasMany(FlashSale::class, 'product_id')->where(function($query){
+            $query->where('start_at', '<=', date('Y-m-d H:i:s'));
+            $query->where('end_at', '>=', date('Y-m-d H:i:s'));
         })->orderBy('created_at');
     }
 
