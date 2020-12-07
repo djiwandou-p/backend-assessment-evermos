@@ -150,7 +150,7 @@ class ProductController extends ApiController
      */
     public function destroy(Product $product)
     {
-        $player->delete();
-        return $this->sendResponse(new ProductResource($player), 'Deleted successfully.', 204);
+        $product->delete();
+        return $this->sendResponse(new ProductResource($product), 'Deleted successfully.', 204);
     }
 }
