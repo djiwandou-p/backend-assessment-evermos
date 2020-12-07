@@ -23,7 +23,8 @@ class OrderDetailResource extends JsonResource
             'discount_type' => $this->discount_type,
             'discount' => $this->discount,
             'price_after_discount' => $this->price_after_discount,
-            'product_id' => $this->id,
+            'is_flash_sale' => $this->is_flash_sale,
+            'product_id' => $this->product_id,
             'product' => new ProductResource($this->product)
         ];
     }

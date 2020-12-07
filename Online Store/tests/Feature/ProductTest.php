@@ -212,7 +212,7 @@ class ProductTest extends TestCase
 
         $modelProduct = self::__createData($model->id);
         self::$fieldFlashSaleValues['start_at'] = date('Y-m-d H:i:s');
-        self::$fieldFlashSaleValues['end_at'] = date('Y-m-d H:i:s');
+        self::$fieldFlashSaleValues['end_at'] = date('Y-m-d H:i:s', strtotime('+1 days'));
     	$response = $this->json('POST', '/api/v1/product/'.$modelProduct->id.'/flash-sale', array_merge(self::$fieldFlashSaleValues, self::$fieldValues), ['Accept' => 'application/json']);
     	$expect = [
 	      	"header" => [
