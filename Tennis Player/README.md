@@ -7,12 +7,13 @@
 - Fork into your repository and Clone this repository. ex: `https://github.com/ranakrisna/backend-assessment-evermos.git`
 The directory name should be `backend-assessment-evermos` 
 - Go to the folder named `Tennis Player`
-    >$ `cd Tennis Player`
+    >$ `cd 'Tennis Player'`
 - copy `.env` from `.env.example` 
     >$ `cp .env.example .env`
+- configure database setting from `.env`
 - install the vendor using composer
     >$ `composer install`
-- create new database named `tennis_player`
+- create new database named same as `.env`
 - migrate the tables
     >$ `php artisan migrate`
 
@@ -22,8 +23,14 @@ The directory name should be `backend-assessment-evermos`
 - This application will run on `localhost:8000`
 
 ### Documentation
-[https://app.swaggerhub.com/apis/ranakrisna/1tennis_player/1.0.0](https://app.swaggerhub.com/apis/ranakrisna/1tennis_player/1.0.0)
+[https://documenter.getpostman.com/view/12838286/TVmS6aD5](https://documenter.getpostman.com/view/12838286/TVmS6aD5)
 
 ### Running Test
+- copy `.env.testing` from `.env.example` 
+    >$ `cp .env.example .env.testing`
+- configure database setting from `.env.testing`
+- create new database named same as `.env.testing`
+- migrate the tables
+    >$ `php artisan migrate --env=testing`
 - Run testing
-    >$ `php artisan test`
+    >$ `php artisan test --env=testing`
