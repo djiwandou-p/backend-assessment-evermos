@@ -3,8 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\ProductResource;
 
-class ContainerResource extends JsonResource
+class StoreResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,8 +18,7 @@ class ContainerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'capacity' => $this->capacity,
-            'ammount' => $this->ammount,
+            'products' => ProductResource::collection($this->products),
         ];
     }
 }
