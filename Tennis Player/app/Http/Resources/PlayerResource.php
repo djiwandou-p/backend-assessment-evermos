@@ -19,7 +19,7 @@ class PlayerResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'state' => $this->state,
-            'container' => ContainerResource::collection($this->containers),
+            'containers' => ContainerResource::collection($this->containers),
         ];
     }
 }

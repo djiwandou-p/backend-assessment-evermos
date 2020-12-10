@@ -51,7 +51,7 @@ class PlayerTest extends TestCase
 						"id" => $model->id,
 						"name" => $model->name,
 						"state" => $model->state,
-						"container" => [],
+						"containers" => [],
 					]
 				]
 	      	]
@@ -74,7 +74,7 @@ class PlayerTest extends TestCase
 						"id" => $model->id,
 						"name" => $model->name,
 						"state" => $model->state,
-						"container" => [
+						"containers" => [
 							[
 								"id" => $modelContainer->id,
 								"name" => $modelContainer->name,
@@ -118,7 +118,7 @@ class PlayerTest extends TestCase
 				"id" => $response['content']['id'],
 				"name" => self::$fieldValues['name'],
 				"state" => self::$fieldValues['state'],
-				"container" => []
+				"containers" => []
 			]
 
 	  	];
@@ -149,7 +149,7 @@ class PlayerTest extends TestCase
 				"id" => $model->id,
 				"name" => $model->name,
 				"state" => $model->state,
-				"container" => [],
+				"containers" => [],
 	      	]
 
 	  	];
@@ -167,7 +167,7 @@ class PlayerTest extends TestCase
 				"id" => $model->id,
 				"name" => $model->name,
 				"state" => $model->state,
-				"container" => [
+				"containers" => [
 					[
 						"id" => $modelContainer->id,
 						"name" => $modelContainer->name,
@@ -206,7 +206,7 @@ class PlayerTest extends TestCase
 				"id" => $model->id,
 				"name" => 'Lisda Kania Yuliani',
 				"state" => $model->state,
-				"container" => [],
+				"containers" => [],
 	      	]
 
 	  	];
@@ -224,7 +224,7 @@ class PlayerTest extends TestCase
 				"id" => $model->id,
 				"name" => 'Lisda Kania Yuliani',
 				"state" => $model->state,
-				"container" => [
+				"containers" => [
 					[
 						"id" => $modelContainer->id,
 						"name" => $modelContainer->name,
@@ -262,7 +262,7 @@ class PlayerTest extends TestCase
 				"id" => $model->id,
 				"name" => $model->name,
 				"state" => $model->state,
-				"container" => [],
+				"containers" => [],
 	      	]
 
 	  	];
@@ -281,7 +281,7 @@ class PlayerTest extends TestCase
 				"id" => $model->id,
 				"name" => $model->name,
 				"state" => $model->state,
-				"container" => [],
+				"containers" => [],
 	      	]
 
 	  	];
@@ -301,7 +301,7 @@ class PlayerTest extends TestCase
 				"id" => $model->id,
 				"name" => $model->name,
 				"state" => 'PLAYED',
-				"container" => [
+				"containers" => [
 					[
 						"id" => $modelContainer->id,
 						"name" => $modelContainer->name,
@@ -325,7 +325,7 @@ class PlayerTest extends TestCase
 				"id" => $model->id,
 				"name" => $model->name,
 				"state" => 'PLAYED',
-				"container" => [
+				"containers" => [
 					[
 						"id" => $modelContainer->id,
 						"name" => $modelContainer->name,
