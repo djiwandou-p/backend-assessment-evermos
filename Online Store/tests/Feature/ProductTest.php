@@ -74,7 +74,6 @@ class ProductTest extends TestCase
 							"name" => $modelProduct->store->name,
 							"created_at" => $modelProduct->store->created_at,
 							"updated_at" => $modelProduct->store->updated_at,
-
 						]
 					]
 				]
