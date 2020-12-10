@@ -42,17 +42,16 @@ class FlashSaleResourceTest extends TestCase
         $output = $resources->response()->getData(true);
         $expect = [];
         $expect['data'] = [
-	        'id' => $model->id,
-	        'start_at' => $model->start_at,
-	        'end_at' => $model->end_at,
-	        'stock' => $model->stock,
-	        'price' => $model->price,
-	        'discount_type' => $model->discount_type,
-	        'discount' => $model->discount,
-	        'price_after_discount' => $model->price_after_discount,
-	        'product_id' => $model->product_id,
-	        'created_at' => $model->created_at,
-	        'updated_at' => $model->updated_at
+            'start_at' => $model->start_at,
+            'end_at' => $model->end_at,
+            'stock' => $model->stock,
+            'price' => $model->price,
+            'discount_type' => $model->discount_type,
+            'discount' => $model->discount,
+            'price_after_discount' => $model->price_after_discount,
+            'product_id' => $model->product_id,
+
+
 		];
         $this->assertEquals($expect, $output);
     }

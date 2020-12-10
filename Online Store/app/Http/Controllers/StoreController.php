@@ -8,6 +8,7 @@ use App\Http\Resources\StoreResource;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ApiController as ApiController;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\FlashSaleResource;
 
 class StoreController extends ApiController
 {
@@ -63,6 +64,18 @@ class StoreController extends ApiController
     {
         $store->load('products');
         return $this->sendResponse(["total" => $store->products->count(), "data" => ProductResource::collection($store->products)], 'OK');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Store  $store
+     * @return \Illuminate\Http\Response
+     */
+    public function showProductsFlashSale(Store $store)
+    {
+        $store->load('flashSales', 'flashSales.product');
+        return $this->sendResponse(["total" => $store->flashSales->count(), "data" => FlashSaleResource::collection($store->flashSales)], 'OK');
     }
 
     /**

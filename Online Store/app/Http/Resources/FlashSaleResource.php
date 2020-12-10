@@ -14,6 +14,16 @@ class FlashSaleResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'start_at' => $this->start_at,
+            'end_at' => $this->end_at,
+            'stock' => $this->stock,
+            'price' => $this->price,
+            'discount_type' => $this->discount_type,
+            'discount' => $this->discount,
+            'price_after_discount' => $this->price_after_discount,
+            'product_id' => $this->product_id,
+            'product' => new ProductResource($this->whenLoaded('product'))
+        ];
     }
 }

@@ -23,6 +23,14 @@ class Store extends Model
         return $this->hasMany(Product::class, 'store_id');
     }
 
+    public function flashSales()
+    {
+        return $this->hasManyThrough(FlashSale::class, Product::class, 'store_id', 'product_id', 'id', 'id')->where(function($query){
+            $query->where('start_at', '<=', date('Y-m-d H:i:s'));
+            $query->where('end_at', '>=', date('Y-m-d H:i:s'));
+        });
+    }
+
     public function getCreatedAtAttribute($value)
     {
         if (empty($value)) {

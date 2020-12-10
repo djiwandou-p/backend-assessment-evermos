@@ -10,6 +10,7 @@ class FlashSale extends Model
 {
     use HasFactory;
     protected $table = 'flash_sales';
+    protected $hidden = ['laravel_through_key'];
 
     protected $fillable = [
         'start_at',
@@ -94,5 +95,10 @@ class FlashSale extends Model
         } else {
             return date('Y-m-d H:i:s', strtotime($value));
         }
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

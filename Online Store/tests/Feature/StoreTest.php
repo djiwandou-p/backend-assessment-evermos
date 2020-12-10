@@ -242,7 +242,7 @@ class StoreTest extends TestCase
         $response->assertStatus(404)->assertJson($expect);
 
         $model = self::__createData();
-    	$response = $this->json('GET', '/api/v1/store/'.$model->id);
+    	$response = $this->json('GET', '/api/v1/store/'.$model->id.'/products');
     	$expect = [
 	      	"header" => [
 	          	"code" => 200,
@@ -250,9 +250,8 @@ class StoreTest extends TestCase
 	          	"status" => true
 	      	],
 	      	"content" => [
-				"id" => $model->id,
-				"name" => $model->name,
-				"products" => [],
+				"total" => 0,
+				"data" => []
 	      	]
 
 	  	];
@@ -267,7 +266,6 @@ class StoreTest extends TestCase
 	          	"status" => true
 	      	],
 	      	"content" => [
-
 				"total" => 1,
 				"data" => [
 					[
@@ -279,6 +277,88 @@ class StoreTest extends TestCase
 						"discount_type" => $modelProduct->discount_type,
 						"discount" => $modelProduct->discount,
 						"price_after_discount" => $modelProduct->price_after_discount,
+					]
+				]
+	      	]
+	  	];
+        $response->assertStatus(200)->assertJson($expect);
+    }
+
+    public function testGetFlashSaleStoreById()
+    {
+    	$response = $this->json('GET', '/api/v1/store/asd/flash-sales');
+    	$expect = [
+	      	"header" => [
+	          	"code" => 404,
+	          	"message" => "Data not found.",
+	          	"status" => false
+	      	]
+	  	];
+        $response->assertStatus(404)->assertJson($expect);
+
+        $model = self::__createData();
+    	$response = $this->json('GET', '/api/v1/store/'.$model->id.'/flash-sales');
+    	$expect = [
+	      	"header" => [
+	          	"code" => 200,
+	          	"message" => "OK",
+	          	"status" => true
+	      	],
+	      	"content" => [
+				"total" => 0,
+				"data" => []
+	      	]
+
+	  	];
+        $response->assertStatus(200)->assertJson($expect);
+
+        $modelProduct = ProductTest::__createData($model->id);
+    	$response = $this->json('GET', '/api/v1/store/'.$model->id.'/flash-sales');
+    	$expect = [
+	      	"header" => [
+	          	"code" => 200,
+	          	"message" => "OK",
+	          	"status" => true
+	      	],
+	      	"content" => [
+				"total" => 0,
+				"data" => []
+	      	]
+	  	];
+        $response->assertStatus(200)->assertJson($expect);
+
+        ProductTest::$fieldFlashSaleValues['start_at'] = date('Y-m-d H:i:s');
+        ProductTest::$fieldFlashSaleValues['end_at'] = date('Y-m-d H:i:s', strtotime('+1 days'));
+        $modelFlashSale = ProductTest::__createDataFlashSale($modelProduct->id);
+    	$response = $this->json('GET', '/api/v1/store/'.$model->id.'/flash-sales');
+    	$expect = [
+	      	"header" => [
+	          	"code" => 200,
+	          	"message" => "OK",
+	          	"status" => true
+	      	],
+	      	"content" => [
+				"total" => 1,
+				"data" => [
+					[
+				        'start_at' => $modelFlashSale->start_at,
+				        'end_at' => $modelFlashSale->end_at,
+				        'stock' => $modelFlashSale->stock,
+				        'price' => $modelFlashSale->price,
+				        'discount_type' => $modelFlashSale->discount_type,
+				        'discount' => $modelFlashSale->discount,
+				        'price_after_discount' => $modelFlashSale->price_after_discount,
+				        'product_id' => $modelFlashSale->product_id,
+				        'product' => [
+				            'id' => $modelProduct->id,
+				            'name' => $modelProduct->name,
+				            'sku' => $modelProduct->sku,
+				            'stock' => $modelProduct->stock,
+				            'price' => $modelProduct->price,
+				            'discount_type' => $modelProduct->discount_type,
+				            'discount' => $modelProduct->discount,
+				            'price_after_discount' => $modelProduct->price_after_discount,
+				        ]
 					]
 				]
 	      	]

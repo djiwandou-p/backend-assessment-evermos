@@ -33,6 +33,7 @@ Route::group(['prefix'=>'v1'], function () {
 			Route::put('', 'App\Http\Controllers\StoreController@update');
 			Route::delete('', 'App\Http\Controllers\StoreController@destroy');
 			Route::get('/products', 'App\Http\Controllers\StoreController@showProducts');
+			Route::get('/flash-sales', 'App\Http\Controllers\StoreController@showProductsFlashSale');
 		});
 	});
 
